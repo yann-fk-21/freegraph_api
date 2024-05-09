@@ -1,14 +1,19 @@
 <%-include('./head.ejs')%>
 <nav class="flex items-center justify-between bg-gray-800 p-4">
     <div>
-        <a href="#" class="text-white font-bold text-lg">Logo</a>
+        <a href="/" class="text-white font-bold text-lg">Logo</a>
     </div>
     <div>
         <% if (!isAuthenticated){ %>
         <a href="/sign-in" class="<%= pageTitle === 'Sign In' ? 'text-blue-600' : 'text-white' %> mr-4">Sign In</a>
         <a href="/sign-up" class="<%= pageTitle === 'Sign Up' ? 'text-blue-600' : 'text-white' %> mr-4">Sign Up</a>
         <% } else {%>
-        <a href="/logout" class="text-white">Logout</a>
+         <div class="flex items-center gap-5">
+            <a href="/share" class="text-white <%= pageTitle === 'Share' ? 'text-blue-600' : 'text-white' %>">Share your product</a>
+            <form action="/logout" method="post">
+               <button type="submit" class="border-none text-white">Logout</button>
+            </form>
+         </div>
         <% } %>
     </div>
 </nav>
