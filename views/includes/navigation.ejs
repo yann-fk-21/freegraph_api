@@ -1,0 +1,14 @@
+<%-include('./head.ejs')%>
+<nav class="flex items-center justify-between bg-gray-800 p-4">
+    <div>
+        <a href="#" class="text-white font-bold text-lg">Logo</a>
+    </div>
+    <div>
+        <% if (!isAuthenticated){ %>
+        <a href="/sign-in" class="<%= pageTitle === 'Sign In' ? 'text-blue-600' : 'text-white' %> mr-4">Sign In</a>
+        <a href="/sign-up" class="<%= pageTitle === 'Sign Up' ? 'text-blue-600' : 'text-white' %> mr-4">Sign Up</a>
+        <% } else {%>
+        <a href="/logout" class="text-white">Logout</a>
+        <% } %>
+    </div>
+</nav>
