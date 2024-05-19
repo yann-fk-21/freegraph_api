@@ -1,8 +1,10 @@
-const User = require('../models/user');
 const bcrypt = require('bcrypt');
 const nodemailer = require('nodemailer');
 const sendgridTransport = require('nodemailer-sendgrid-transport');
 const crypto = require('crypto');
+const { validationResult } = require('express-validator')
+
+const User = require('../models/user');
 
 
 const transporter = nodemailer.createTransport(sendgridTransport({
@@ -15,7 +17,8 @@ exports.getSignUp = (req, res, next) => {
   res.render('auth/sign-up',{
         pageTitle:'Sign Up',
         path:'/sign-up',
-        isAuthenticated: req.session.isLoggedIn
+        isAuthenticated: req.session.isLoggedIn,
+        messageError:''
     })
 }
 
@@ -23,11 +26,23 @@ exports.postSignUp = async (req, res, next) => {
 
    const email = req.body.email ;
    const password = req.body.password;
+   const errors = validationResult(req);
 
    const user = await User.findOne({email: email});
-   if(user) return res.redirect('/sign-in');
-   
-   
+
+   if(user){
+    return res.redirect('/sign-in');
+   }
+
+   if(!errors.isEmpty()) {
+       return res.render('auth/sign-up', {
+        pageTitle:'Sign up',
+        path: '/auth/sign-up',
+        isAuthenticated: req.session.isLoggedIn,
+        messageError: errors.array()[0].msg
+       })
+   } 
+
     bcrypt.hash(password, 12).then(hashPassword => {
         const newUser = new User({email:email, password:hashPassword});
         return newUser.save();
@@ -56,15 +71,25 @@ exports.getSignIn = (req, res, next) => {
     res.render('auth/sign-in',{
         pageTitle:'Sign In',
         path:'/sign-in',
-        isAuthenticated: req.session.isLoggedIn
+        isAuthenticated: req.session.isLoggedIn,
+        messageError:''
     })
 }
 
 exports.postSignIn = async (req, res, next) => {
     const email = req.body.email;
     const password = req.body.password;
+    const errors = validationResult(req);
 
     const findingUser = await User.findOne({email:email});
+    if(!errors.isEmpty()) {
+        return res.render('auth/sign-in', {
+         pageTitle:'Sign In',
+         path: '/auth/sign-in',
+         isAuthenticated: req.session.isLoggedIn,
+         messageError: errors.array()[0].msg
+        })
+    } 
     if(!findingUser){
         return res.redirect('/sign-up')
     }

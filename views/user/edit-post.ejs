@@ -1,0 +1,26 @@
+<%- include('../includes/navigation.ejs') %>
+
+<body>
+    
+    <form action="/edit-post" method="post" class="max-w-md mx-auto pt-12">
+        <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2" for="title">Title</label>
+            <input value="<%=post.title%>" name="title" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="title" type="text" placeholder="Enter the title">
+        </div>
+        <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2" for="image">Image URL</label>
+            <input value="<%=post.imageUrl%>" name="imageUrl" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="image" type="text" placeholder="Enter the image URL">
+        </div>
+        <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2" for="description">Description</label>
+            <input value="<%=post.description%>" name="description" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="description" type="text" placeholder="Enter the description">
+        </div>
+        <input type="hidden" name="postId" value="<%= post._id%>">
+        <div class="flex items-center justify-center">
+            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button">
+                Submit
+            </button>
+        </div>
+    </form>
+
+</body>
