@@ -1,5 +1,6 @@
 // const User = require('../models/user');
 const Post = require('../models/post');
+const { findOne } = require('../models/user');
 
 exports.getHomepage = async (req, res, next) => {
 
@@ -41,4 +42,46 @@ exports.postShare = async (req, res, next) => {
         console.log(err);
     }
 
+}
+
+exports.getPost = async (req, res, next) => {
+   try{
+    const postId = req.params.postId;
+    const userId = req.session.user._id;
+
+    const findingPost = await Post.findOne({_id: postId, userId: userId});
+
+    res.render('user/edit-post', {
+        pageTitle: 'Edit Post',
+        path: '/edit-post',
+        post: findingPost,
+        isAuthenticated: req.session.isLoggedIn
+    })
+   } catch(err) {
+    console.log(err);
+   }
+}
+
+exports.editPost = async (req, res, next) => {
+    try {
+        const postId = req.body.postId;
+        const userId = req.session.user._id
+    
+        const findingPost = await Post.findOne({_id:postId, userId: userId});
+    
+        findingPost.title = req.body.title;
+        findingPost.image = req.body.imageUrl;
+        findingPost.description = req.body.description;
+    
+         await findingPost.save();
+         res.redirect('/');
+    } catch(err) {
+        console.log(err);
+    }
+}
+
+exports.postDelete = async (req, res, next) => {
+    const postId = req.params.postId;
+    await Post.deleteOne({_id: postId});
+    res.redirect('/');
 }
