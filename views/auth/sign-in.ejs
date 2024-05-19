@@ -1,9 +1,14 @@
 <%-include('../includes/navigation.ejs')%>
 
-<div class="flex justify-center items-center h-screen">
+<div class="flex flex-col justify-center items-center h-screen">
+    <% if(messageError) { %>
+        <div class="px-20 py-6 rounded-lg bg-red-200 border border-gray-100">
+        <h1><%=messageError%></h1>
+        </div>
+    <% } %>
     <div class="bg-white shadow-md rounded px-8 py-6">
         <h2 class="text-2xl font-bold mb-6">Login</h2>
-        <form action="/sign-in" method="post">
+        <form action="/sign-in" method="post" novalidate>
             <div class="mb-4">
                 <label class="block text-gray-700 text-sm font-bold mb-2" for="email">
                     Email
