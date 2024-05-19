@@ -4,11 +4,19 @@
     <% if(posts){ %>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         <% posts.forEach(post=>{ %>
-        <div class="border w-full border-gray-100 rounded-lg shadow-md">
-            <img class="w-full h-60 object-cover bg-gray-300" src="<%= post.imageUrl %>" alt="post">
-            <h1 class="text-2xl font-bold px-3"><%=post.title%></h1>
-            <p class="mt-2 px-3"><%=post.description%></p>
-        </div>
+            <div class="border w-full border-gray-100 rounded-lg shadow-md">
+                <img class="w-full h-60 object-cover bg-gray-300" src="<%= post.imageUrl %>" alt="post">
+                <h1 class="text-2xl font-bold px-3"><%=post.title%></h1>
+                <p class="mt-2 px-3"><%=post.description%></p>
+                <% if(isAuthenticated){ %> 
+                    <div class="flex items-center gap-4 py-5 px-6">
+                        <a href="/edit-post/<%=post._id%>"><button class="px-8 py-2 bg-gray-800 text-white rounded-lg">Edit</button></a>
+                       <form action="/delete/<%=post._id%>" method="post">
+                        <button class="px-8 py-2 bg-red-500 text-white rounded-lg">Delete</button>
+                       </form>
+                    </div>
+                <% } %>
+            </div>
         <% }) %>
     </div>
     <% }else{ %>
